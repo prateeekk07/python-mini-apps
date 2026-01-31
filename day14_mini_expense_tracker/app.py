@@ -1,48 +1,33 @@
-def add_expense(amount, note):
-    with open("expenses.txt", "a") as file:
-        file.write(f"{amount},{note}\n")
-    print("✅ Expense added successfully!")
+from datetime import datetime
+from zoneinfo import ZoneInfo   # Python 3.9+
 
-def view_expenses():
-    try:
-        with open("expenses.txt", "r") as file:
-            expenses = file.readlines()
+print("🌍 World Clock")
 
-        if not expenses:
-            print("📭 No expenses found.")
-            return
+print("Choose a country:")
+print("1. India")
+print("2. USA (New York)")
+print("3. UK (London)")
+print("4. Japan")
 
-        total = 0
-        print("\n💰 Expense List:")
-        for i, expense in enumerate(expenses, start=1):
-            amount, note = expense.strip().split(",", 1)
-            total += float(amount)
-            print(f"{i}. ₹{amount} - {note}")
+choice = input("Enter choice (1/2/3/4): ")
 
-        print(f"\n🧾 Total Expense: ₹{total}")
+if choice == "1":
+    tz = ZoneInfo("Asia/Kolkata")
+    country = "India"
+elif choice == "2":
+    tz = ZoneInfo("America/New_York")
+    country = "USA (New York)"
+elif choice == "3":
+    tz = ZoneInfo("Europe/London")
+    country = "UK (London)"
+elif choice == "4":
+    tz = ZoneInfo("Asia/Tokyo")
+    country = "Japan"
+else:
+    print("❌ Invalid choice")
+    exit()
 
-    except FileNotFoundError:
-        print("📭 No expenses found.")
+current_time = datetime.now(tz).strftime("%d-%m-%Y %H:%M:%S")
 
-print("💰 Mini Expense Tracker")
-print("1. Add Expense")
-print("2. View Expenses")
-print("3. Exit")
-
-while True:
-    choice = input("\nChoose an option (1/2/3): ")
-
-    if choice == "1":
-        amount = float(input("Enter amount: ₹"))
-        note = input("Enter expense note: ")
-        add_expense(amount, note)
-
-    elif choice == "2":
-        view_expenses()
-
-    elif choice == "3":
-        print("👋 Exiting Expense Tracker. Bye!")
-        break
-
-    else:
-        print("❌ Invalid choice. Try again.")
+print(f"\n⏰ Current time in {country}:")
+print(current_time)
